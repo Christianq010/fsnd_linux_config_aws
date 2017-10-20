@@ -17,9 +17,11 @@ Add user `grader` with command: `sudo adduser grader`
 ## Allow sudo commands to user grader
  * Access the `/etc/sudoers.d` with `sudo ls /etc/sudoers.d`
  * Create the file `grader`, in my case I copied an existing file and renamed it.
- `sudo cp /etc/sudoers.d/90-cloud-init-users /etc/sudoers.d/grader`
+ ```
+ sudo cp /etc/sudoers.d/90-cloud-init-users /etc/sudoers.d/grader
+ ```
  * Additionally we could also use `sudo adduser <username> sudo` to add user to `sudo` group.
-Add the following to the file:
+ * Change contents of the file to the following:
 ```
 grader ALL=(ALL) NOPASSWD:ALL
 ```
