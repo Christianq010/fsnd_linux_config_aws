@@ -2,17 +2,24 @@
 _A baseline installation of a Linux distribution on a virtual machine to host our web application._
 
 # Server details
-Public IP address: `13.229.75.179`
+Public IP address: `13.126.92.128`
 
 Private IP: `172.26.11.132`
 
 SSH port: `~~`demo`~~`
 
-> First connect our Linux Server securely using your browser(via Amazon Lightsail in my case.)
+> We could connect to our Linux Server securely using our browser(via Amazon Lightsail in my case.)
+
+*I instead created a keypair (on my instance of AWS lightsail), downloaded the .pem(private key) generated, placed in my ~/.ssh folder and used the following command to connect via our own ssh client(git bash)*
+```
+ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@13.126.92.128
+```
 
 # Start Configuration
 ## Add user - grader
 Add user `grader` with command: `sudo adduser grader`
+
+Use the `su` command to switch user from `ubuntu` to `grader` with - `su - grader`
 
 ## Allow sudo commands to user grader
  * Access the `/etc/sudoers.d` with `sudo ls /etc/sudoers.d`
@@ -27,22 +34,26 @@ grader ALL=(ALL) NOPASSWD:ALL
 ```
 
 ## Packages
-#Add Package
-
-`sudo apt-get install finger` - install package finger
+# Add Package
+  * Install package finger `sudo apt-get install finger`
 
 ## Update all currently installed packages
-
-`apt-get update` - to update the package indexes
-
-`apt-get upgrade` - to actually upgrade the installed packages
+ * Show list of packages to be updated - `sudo apt-get update`
+ * Upgrade the installed packages - `sudo apt-get upgrade`
 
 
 ## Set-up SSH keys for user grader
-:
-```
+### Generating Key Pairs:
+ * On our local machine, using `ssh-keygen` in the terminal we generate a keygen named `fsnd_linux_config_project` with the Passphrase: `grader`
+ * On our VM use `mkdir /home/grader/.ssh`
+ * and then generate `touch /home/grader/.ssh/authorized_keys`.
+ * Back on our local machine, view the contents of our `.pub` file in the `.ssh/` directory with `cat ~/.ssh/fsnd_linux_config_project.pub` and copy it.
+ * On the VM use `sudo nano /home/grader/.ssh/authorized_keys` to edit the file and paste the contents.
 
-```
+### File Permissions
+ * To ensure other users don't gain access to our account
+ * `sudo chmod 700 .ssh`
+ * `sudo chmod 644 .ssh/authorized_keys`
 
 Can now login as the `grader` user using the command:
 ``
@@ -176,3 +187,4 @@ def application(environ, start_response):
 
 #### Additional Resources
 * https://askubuntu.com/questions/7477/how-can-i-add-a-new-user-as-sudoer-using-the-command-line
+* https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart
