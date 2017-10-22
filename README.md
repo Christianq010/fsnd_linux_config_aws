@@ -1,24 +1,32 @@
 # Linux Server Configuration
 _A baseline installation of a Linux distribution on a virtual machine to host our web application._
 
+# Setting up your own Web Server
+*--------------------------------*
+* Log into AWS and create an instance of ubuntu on the [Amazon Lightsail website](https://lightsail.aws.amazon.com/)
+* Select the closest region to your location and the pricing plan you desire.
+* Give your instance a name and start it up.
+
 # Server details
 Public IP address: `35.154.95.143`
 
 Private IP: `172.26.11.132`
 
-SSH port: `~~`demo`~~`
+SSH port: `22`
 
 > We could connect to our Linux Server securely using our browser(via Amazon Lightsail in my case.)
 
-*I instead created a keypair (on my instance of AWS lightsail), downloaded the .pem(private key) generated, placed in my ~/.ssh folder and used the following command to connect via our own ssh client(git bash)*
+*I also created a keypair (on my instance of AWS lightsail), downloaded the .pem(private key) generated, placed in my ~/.ssh folder and used the following command to connect via our own ssh client(git bash)*
 ```
 ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@35.154.95.143
 ```
 
 # Start Configuration
+* When you SSH in, you'll be logged as the `ubuntu` user. When you want to execute commands as root, you'll need to use the `sudo` command to do it.
+
 ## Add user - grader 
 * As ubuntu, add user `grader` with command: `sudo adduser grader` (password: grader)
-* Use the `su` command to switch user from `ubuntu` to `grader` with `su - grader`
+* *Note:* Use the `su` command to switch user from `ubuntu` to `grader` with `su - grader`
 
 ## Allow sudo commands to user grader
 * As the `ubuntu` user - 
@@ -65,7 +73,6 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
 * Use `sudo service ssh restart` to restart ssh after changes.
 * Use `sudo reboot` to disconnect and restart VM.
 
-## 02. Linux - Setting up your own Web Server
 
 ### Lesson 1 - Intro to Linux
 * `ls -al` to show all files with additional info about them.
