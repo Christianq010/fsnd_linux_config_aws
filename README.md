@@ -61,6 +61,9 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
  * Show list of packages to be updated - `sudo apt-get update`
  * Upgrade the installed packages - `sudo apt-get upgrade`
 
+# SSH Reboot and Restart
+* Use `sudo service ssh restart` to restart ssh after changes.
+* Use `sudo reboot` to disconnect and restart VM.
 
 ## 02. Linux - Setting up your own Web Server
 
