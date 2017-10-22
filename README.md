@@ -55,6 +55,7 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
 ## Packages
 # Add Package
   * Install package finger `apt-get install finger`
+  * Check info about user grader with - `finger grader`
 
 ## Update all currently installed packages
  * Show list of packages to be updated - `sudo apt-get update`
