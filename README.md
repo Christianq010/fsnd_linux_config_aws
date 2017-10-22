@@ -35,7 +35,7 @@ grader ALL=(ALL) NOPASSWD:ALL
 
 ## Set-up SSH keys for user grader
 ### Generating Key Pairs:
- * On our local machine, using `ssh-keygen` in the terminal we generate a keygen named `fsnd_linux_config_project` with the Passphrase: `grader`
+ * On our local machine, using `ssh-keygen` in the terminal we generate a keygen named `udacity_fsnd_key` with no Passphrase.
  * On our VM use `mkdir /home/grader/.ssh` then generate `touch /home/grader/.ssh/authorized_keys`.
  * Back on our local machine, view the contents of our `.pub` file with `cat ~/.ssh/udacity_fsnd_key.pub` and copy it.
  * On the VM use `sudo nano /home/grader/.ssh/authorized_keys` to edit the file and paste the contents.
@@ -45,7 +45,9 @@ grader ALL=(ALL) NOPASSWD:ALL
  * `sudo chmod 700 .ssh`
  * `sudo chmod 644 .ssh/authorized_keys`
 
-Can now login as the `grader` user using the command:
+*I got the Error: Permission Denied(publickey) and solved it by realising that the nano text editor wrapped long lines into new lines during the copy/pasting process - remove these white spaces to make sure the string contains none*
+
+Successfully login as the `grader` user using the command:
 ```
 ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
 ```
