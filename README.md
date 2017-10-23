@@ -50,6 +50,8 @@ grader ALL=(ALL) NOPASSWD:ALL
 
 *I got the Error: Permission Denied(publickey) and solved it by realising that the nano text editor wrapped long lines into new lines during the copy/pasting process - remove these white spaces to make sure the string contains none.*
 
+ * Force Key Based Authentication by editing the file `sudo nano /etc/ssh/sshd_config`.
+
 ### File Permissions
 > To ensure other users don't gain access to our account
  * `sudo chmod 700 .ssh`
@@ -74,13 +76,11 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
 * Use `sudo service ssh restart` to restart ssh after changes.
 * Use `sudo reboot` to disconnect and restart VM.
 
-
-#### *Linux File Permissions*
+# Chgrp and Chown
+### *Linux File Permissions*
 * Octal Permissions (rw-, r--, r--), (6,4,4)
-* Change file Group - `sudo chgrp root .bash_history`
-* View File as student `cat .bash_history`
-* Change file Owner - `sudo chown root .bash_history`
-* Change file Onwer back to student - `sudo chown student .bash_history`
+* Change file Group - eg. `sudo chgrp root .bash_history`
+* Change file Owner - eg. `sudo chown root .bash_history`
 
 #### *Firewalls*
 * List of Ports - https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
