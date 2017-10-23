@@ -8,15 +8,15 @@ _A baseline installation of a Linux distribution on a virtual machine to host ou
 * Give your instance a name and start it up.
 
 # Server details
-Public IP address: `35.154.95.143`
+Public IP address: `35.154.1.22`
 
-Private IP: `172.26.11.216`
+Private IP: `172.26.14.76`
 
-SSH port: `22`
+SSH port: `2200`
 
 *I also created a keypair (on my instance of AWS lightsail), downloaded the .pem(private key) generated, placed in my ~/.ssh folder and used the following command to connect via our own ssh client(git bash)*
 ```
-ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@35.154.95.143
+ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@35.154.1.22
 ```
 
 # Start Configuration
@@ -35,11 +35,11 @@ ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@35.154.95.143
  ```
  sudo cp /etc/sudoers.d/90-cloud-init-users /etc/sudoers.d/grader
  ```
- * Additionally we could also use `sudo adduser <username> sudo` to add user to `sudo` group.
- * Change contents of the file to the following:
+ * Use `sudo nano /etc/sudoers.d/grader` and change contents of the file to the following:
 ```
 grader ALL=(ALL) NOPASSWD:ALL
 ```
+ * Additionally we could also use `sudo adduser <username> sudo` to add user to `sudo` group.
 
 ## Set-up SSH keys for user grader
 ### Generating Key Pairs:
@@ -52,19 +52,19 @@ grader ALL=(ALL) NOPASSWD:ALL
 
  * Force Key Based Authentication by editing the file `sudo nano /etc/ssh/sshd_config`.
 
+Successfully login as the `grader` user using the command:
+```
+ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.1.22
+```
+
 ### File Permissions
 > To ensure other users don't gain access to our account
  * `sudo chmod 700 .ssh`
  * `sudo chmod 644 .ssh/authorized_keys`
 
-Successfully login as the `grader` user using the command:
-```
-ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
-```
-
 ## Packages
 # Add Package
-  * Install package finger `apt-get install finger`
+  * Install package finger `sudo apt-get install finger`
 
 > Check info about user grader using finger with - `finger grader`
 
@@ -72,27 +72,44 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.95.143
  * Show list of packages to be updated - `sudo apt-get update`
  * Upgrade the installed packages - `sudo apt-get upgrade`
 
-# SSH Reboot and Restart
-* Use `sudo service ssh restart` to restart ssh after changes.
-* Use `sudo reboot` to disconnect and restart VM.
 
-# Chgrp and Chown
-### *Linux File Permissions*
-* Octal Permissions (rw-, r--, r--), (6,4,4)
-* Change file Group - eg. `sudo chgrp root .bash_history`
-* Change file Owner - eg. `sudo chown root .bash_history`
+## Change SSH Port
+* On the networking tab of our ubuntu instance on the Amazon lightsail page.
+  * Add a custom TCP protocol on port 2200.
+  * Add a the HTTP (port 80) and NTP (port 123).
+* On our VM, change port from 22 to 2200 by editing `sudo nano /etc/ssh/sshd_config`.
+* Restart the SSH service
+ * Log in via port 2200
+ ```
+ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.1.22 -p 2200
+```
 
-#### *Firewalls*
-* List of Ports - https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers
-* ubuntu default firewall check - `sudo ufw status`
+## Uncomplicated Firewall - UFW
+### *Configuring our Firewall*
+* Check status on our firewall - `sudo ufw status`
 * Block all connections coming in - `sudo ufw default deny incoming`
 * Allow all connections outgoing from our server - `sudo ufw default allow outgoing`
-* Check status of our ubuntu default firewall again - `sudo ufw status`
 * Allow all SSH connections - `sudo ufw allow ssh`
-* Allow our Vagrant SSH set up all tcp on port 2222- `sudo ufw allow 2222/tcp`
-* Allow support for our basic HTTP server - `sudo ufw allow www`
+* According to the project rubric, allow the following - 
+ ```
+sudo ufw allow 2200/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 123/udp
+ ```
 * Enable our Firewall (*only once we have configured our firewall correctly*) - `sudo ufw enable`
 * Check out status to see implementation of firewall using - `sudo ufw status`
+
+
+
+## Tips
+### ubuntu Password
+> Default ubuntu user is created upon instance.
+ * To change password - `sudo passwrd <username>`
+
+# SSH Reboot and Restart
+* Use `sudo service ssh restart` or `/etc/init.d/ssh restart` to restart ssh after changes.
+* Use `sudo reboot` to disconnect and restart VM.
+
 
 ============================================
 
