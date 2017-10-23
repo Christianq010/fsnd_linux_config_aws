@@ -106,12 +106,58 @@ sudo ufw allow 123/udp
   * Install with `sudo apt-get install apache2`
   * Test by opening our public IP on our browser `http://35.154.1.22`, it should display the Default Apache2 Ubuntu **It works** page.
 
+_We can `cd` to the `var/www/html` directory, to find the html file that is currently being served onto the site_ 
+
 ### Installing mod_wsgi
-> This is free tool for serving Python applications from Apache.
+> This is a free tool for serving Python applications from Apache.
 > We will also be installing a helper package called python-setuptools.
   * Install with `sudo apt-get install python-setuptools libapache2-mod-wsgi`.
 
 * Restart our Apache server for **mod_wsgi** to load: `sudo service apache2 restart`.
+
+### Install git
+> git is our version control software.
+  * Install with `sudo apt-get install git`
+
+### Setup our flask project
+> Move into the www directory , create a folder to store a clone of our catalog repo from github.
+  * Move using `cd` to `/var/www` and create the directory `sudo mkdir fsnd_catalog_project`.
+  * In the `fsnd_catalog_project` directory clone our project repo with
+    ```
+    sudo git clone https://github.com/Christianq010/fsnd_Item-Catalog-linux-server.git
+    ```
+### Editing our Project
+> I had to make changes to my Catalog Item project, which I have explained on the README of that repo.
+  * https://github.com/Christianq010/fsnd_Item-Catalog-linux-server
+> Install Flask, our virtual environment and our dependencies.
+> Used a combination of git commands such as push, pull and commit to sync between edits made locally and the repo on our instance of ubuntu.
+
+### Configure / Enable a new virtual host
+* Create and edit with the following - `sudo nano /etc/apache2/sites-available/FlaskApp.conf`
+```
+  <VirtualHost *:80>
+      ServerName 35.154.1.22
+      ServerAdmin admin@35.154.1.22
+      WSGIScriptAlias / /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/catalog.wsgi
+      <Directory /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/>
+          Order allow,deny
+          Allow from all
+      </Directory>
+      Alias /static /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/static
+      <Directory /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/static/>
+          Order allow,deny
+          Allow from all
+      </Directory>
+      ErrorLog ${APACHE_LOG_DIR}/error.log
+      LogLevel warn
+      CustomLog ${APACHE_LOG_DIR}/access.log combined
+  </VirtualHost>
+```
+* Restart the apache service with `service apache2 reload`
+* Enable our new virtual host with `sudo a2ensite catalog`
+
+_I followed the Following posts - https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html, https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps_
+
 
 
 ## Tips
