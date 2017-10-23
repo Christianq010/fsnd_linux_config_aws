@@ -99,6 +99,19 @@ sudo ufw allow 123/udp
 * Enable our Firewall (*only once we have configured our firewall correctly*) - `sudo ufw enable`
 * Check out status to see implementation of firewall using - `sudo ufw status`
 
+# Install and configure to serve our python application
+
+### Installing Apache
+> Apache is our web server, its job is to process HTTP requests.
+  * Install with `sudo apt-get install apache2`
+  * Test by opening our public IP on our browser `http://35.154.1.22`, it should display the Default Apache2 Ubuntu **It works** page.
+
+### Installing mod_wsgi
+> This is free tool for serving Python applications from Apache.
+> We will also be installing a helper package called python-setuptools.
+  * Install with `sudo apt-get install python-setuptools libapache2-mod-wsgi`.
+
+* Restart our Apache server for **mod_wsgi** to load: `sudo service apache2 restart`.
 
 
 ## Tips
@@ -119,18 +132,6 @@ sudo ufw allow 123/udp
 * Configure `Apache` to hand-off specific requests to Python providing the ability to develop dynamic websites
 * Setup `PostgreSQL` and write a simple Python application that generates a data-driven website
 
-#### Vagrant Pre-requisites (only for Vagrant)
-* Add the following line to your `Vagrantfile` in the project directory
-```
-config.vm.network "forwarded_port", guest: 80, host: 8080
-```
-
-On some Windows machines you may have to add this instead
-```
-config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-```
-
-* Run `vagrant up` or if you are already running vagrant run `vagrant reload` to refresh.
 
 #### Install Apache
 * Install Apache using your package manager with the following command: `sudo apt-get install apache2`
@@ -174,3 +175,4 @@ def application(environ, start_response):
 #### Additional Resources
 * https://askubuntu.com/questions/7477/how-can-i-add-a-new-user-as-sudoer-using-the-command-line
 * https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart
+* https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html
