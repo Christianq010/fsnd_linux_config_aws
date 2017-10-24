@@ -135,7 +135,9 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
 #### Setting up our project to run on our Ubuntu server
 * Create a catalog.wsgi file - `sudo nano flaskapp.wsgi` in the `/var/www/FlaskApp` directory,
 with the following contents:
+
  ```
+#!/usr/bin/python
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
@@ -144,6 +146,7 @@ sys.path.insert(0, "/var/www/FlaskApp/")
 from FlaskApp import app as application
 application.secret_key = 'super_secret_key'
  ```
+
 * Rename project.py to __init__.py `mv application.py __init__.py`
 
 #### Installing a virtual environment, flask and other project dependencies
@@ -225,11 +228,26 @@ GRANT ALL ON SCHEMA public TO catalog;
 ```
 * Log out of the `psql` terminal with `\q`, and then use `exit` to logout/ switch back to our `grader` user.
 
-_I followed the Following posts - [Udacity LAMP Set-up Blog Post](https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html), [Digital Ocean Tutorial - Deploy Flask App on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps), [Digital Ocean Tutorial - CRUD in PostgreSQL](https://www.digitalocean.com/community/tutorials/how-to-create-remove-manage-tables-in-postgresql-on-a-cloud-server),[Digital Ocean Tutorial - Secure PostgreSQL in Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)_
+#### Edits made to our repository on our server to config our server
+* Refactor the following files - `__init__.py`,`database_setup.py`,`data.py` to contain our new database connection.
+```python
+engine = create_engine('postgresql://catalog:123456@localhost/catalog')
+```
+* Include the full file path on any code using the `.open` method.
+```python
+app_id = json.loads(open('/var/www/FlaskApp/FlaskApp/fb_client_secrets.json', 'r').read())[
+        'web']['app_id']
+```
 
 
 
-## Tips
+_I followed the Following posts - [Udacity LAMP Set-up Blog Post] (https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html), [Digital Ocean Tutorial - Deploy Flask App on Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps), [Digital Ocean Tutorial - CRUD in PostgreSQL] (https://www.digitalocean.com/community/tutorials/how-to-create-remove-manage-tables-in-postgresql-on-a-cloud-server), [Digital Ocean Tutorial - Secure PostgreSQL in Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)_
+
+
+
+============================================
+
+# Tips / Notes
 ### ubuntu Password
 > Default ubuntu user is created upon instance.
  * To change password - `sudo passwrd <username>`
@@ -248,53 +266,7 @@ _I followed the Following posts - [Udacity LAMP Set-up Blog Post](https://blog.u
 
 ============================================
 
-## 03. Linux - Web Application Servers
-
-* Use the `Apache HTTP Server` to respond to HTTP requests and serve a static webpage
-* Configure `Apache` to hand-off specific requests to Python providing the ability to develop dynamic websites
-* Setup `PostgreSQL` and write a simple Python application that generates a data-driven website
-
-
-#### Install Apache
-* Install Apache using your package manager with the following command: `sudo apt-get install apache2`
-* Confirm Apache is working by visiting `http://localhost:8080` in your browser
-* Apache, by default, serves its files from the `/var/www/html` directory. Explore this directory to edit `index.html`
-
-#### Install mod_wsgi
-* Install mod_wsgi: `sudo apt-get install libapache2-mod-wsgi`
-* We then need to configure Apache to handle requests using the WSGI module, `cd` to `/etc/apache2/sites-enabled/000-default.conf`
-* This file tells Apache how to respond to requests, where to find the files for a particular site and much more [Apache Documentation](https://httpd.apache.org/docs/2.2/configuring.html).
-* Add the following line at the end of the `<VirtualHost *:80>` block, right before the closing `</VirtualHost>`
-```
-<VirtualHost *:80>
-    WSGIScriptAlias / /var/www/html/myapp.wsgi
-</VirtualHost> 
-```
-* Restart Apache with `sudo apache2ctl restart`
-
-#### Our First WSGI Application
-* Quickly test our Apache configuration by writing a very basic WSGI application (http://wsgi.readthedocs.org/en/latest/).
-* Despite having the extension `.wsgi`, these are just Python applications.
-* Create the `/var/www/html/myapp.wsgi` file using the command `sudo nano /var/www/html/myapp.wsgi`
-* Within this file, write the following application:
-```
-def application(environ, start_response):
-    status = '200 OK'
-    output = 'Hello World!'
-
-    response_headers = [('Content-type', 'text/plain'), ('Content-Length', str(len(output)))]
-    start_response(status, response_headers)
-
-    return [output]
-```
-*  Reload (http://localhost:8080) to see your application run.
-
-##### Installing PostgreSQL
-* Install PostgreSQL to server your data using the command `sudo apt-get install postgresql`.
-* Note : Since you are installing your web server and database server on the same machine, you do not need to modify your firewall settings. Your web server will communicate with the database via an internal mechanism that does not cross the boundaries of the firewall. If you were installing your database on a separate machine, you would need to modify the firewall settings on both the web server and the database server to permit these requests.
-
-
-#### Additional Resources
+#### Additional Links Used
 * https://askubuntu.com/questions/7477/how-can-i-add-a-new-user-as-sudoer-using-the-command-line
 * https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart
 * https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html
