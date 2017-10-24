@@ -14,6 +14,9 @@ Private IP: `172.26.14.76`
 
 SSH port: `2200`
 
+Our URL: http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/
+
+
 *I also created a keypair (on my instance of AWS lightsail), downloaded the .pem(private key) generated, placed in my ~/.ssh folder and used the following command to connect via our own ssh client(git bash)*
 ```
 ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@35.154.1.22
@@ -238,8 +241,33 @@ engine = create_engine('postgresql://catalog:123456@localhost/catalog')
 app_id = json.loads(open('/var/www/FlaskApp/FlaskApp/fb_client_secrets.json', 'r').read())[
         'web']['app_id']
 ```
+#### Update Google / Facebook Sign in Info
+Got the URL of our site by doing a reverse DNS lookup of the public IP address of our server here - https://mxtoolbox.com/ReverseLookup.aspx
+* For our [Google Log in] (https://console.developers.google.com/apis/credentials/)
+  * Add to our Authorized Javascript origins
+  ```
+  http://35.154.1.22
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com
+  ```
+  * Add to our Authorized redirect URIs
+  ```
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/catalog 
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/login 
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/gconnect 
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/gdisconnect
+  ```
+  * Download the new client_secrets.json file and update our `/var/www/FlaskApp/FlaskApp/client_secret.json` with its contents.
 
-
+* For our [Facebook Log in] (https://developers.facebook.com/apps/)
+  * On App, go to our Facebook Login Settings and save the following in the Valid OAuth redirect URIs
+  ```
+  http://35.154.1.22
+  http://35.154.1.22/login
+  http://35.154.1.22/catalog
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/catalog 
+  http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/login
+  ```
 
 _I followed the Following posts - [Udacity LAMP Set-up Blog Post] (https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html), [Digital Ocean Tutorial - Deploy Flask App on Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps), [Digital Ocean Tutorial - CRUD in PostgreSQL] (https://www.digitalocean.com/community/tutorials/how-to-create-remove-manage-tables-in-postgresql-on-a-cloud-server), [Digital Ocean Tutorial - Secure PostgreSQL in Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)_
 
