@@ -121,10 +121,10 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
 
 ### Setup our flask project
 > Move into the www directory , create a folder to store a clone of our catalog repo from github.
-  * Move using `cd` to `/var/www` and create the directory `sudo mkdir fsnd_catalog_project`.
-  * In the `fsnd_catalog_project` directory clone our project repo with
+  * Move using `cd` to `/var/www` and create the directory `sudo mkdir FlaskApp`.
+  * In the `FlaskApp` directory clone our project repo with
     ```
-    sudo git clone https://github.com/Christianq010/fsnd_Item-Catalog-linux-server.git
+    sudo git clone https://github.com/Christianq010/fsnd_Item-Catalog-linux-server.git FlaskApp
     ```
 ### Editing our Project
 > I had to make changes to my Catalog Item project, which I have explained on the README of that repo.
@@ -138,13 +138,13 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
   <VirtualHost *:80>
       ServerName 35.154.1.22
       ServerAdmin admin@35.154.1.22
-      WSGIScriptAlias / /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/catalog.wsgi
-      <Directory /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/>
+      WSGIScriptAlias / /var/www/FlaskApp/flaskapp.wsgi
+      <Directory /var/www/FlaskApp/FlaskApp/>
           Order allow,deny
           Allow from all
       </Directory>
-      Alias /static /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/static
-      <Directory /var/www/fsnd_catalog_project/fsnd_Item-Catalog-linux-server/static/>
+      Alias /static /var/www/FlaskApp/FlaskApp/static
+      <Directory /var/www/FlaskApp/FlaskApp/static/>
           Order allow,deny
           Allow from all
       </Directory>
@@ -153,8 +153,8 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
       CustomLog ${APACHE_LOG_DIR}/access.log combined
   </VirtualHost>
 ```
-* Restart the apache service with `service apache2 reload`
-* Enable our new virtual host with `sudo a2ensite catalog`
+* Restart the apache service with `service apache2 reload` or `service apache2 restart`
+* Enable our new virtual host with `sudo a2ensite FlaskApp`
 
 _I followed the Following posts - https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html, https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps_
 
@@ -164,10 +164,17 @@ _I followed the Following posts - https://blog.udacity.com/2015/03/step-by-step-
 ### ubuntu Password
 > Default ubuntu user is created upon instance.
  * To change password - `sudo passwrd <username>`
+### Moving folders, renaming and removing files
+ * To move folders in linux use `mv source target` and `mv filename1.txt filename2.txt`.
+ * To remove `sudo rm -f -r filename`
 
 # SSH Reboot and Restart
 * Use `sudo service ssh restart` or `/etc/init.d/ssh restart` to restart ssh after changes.
 * Use `sudo reboot` to disconnect and restart VM.
+
+## Viewing Apache2 Error Logs during set-up
+* `sudo journalctl | tail`
+* Look into `/var/log/` directories, in my case `/var/log/apache2/error.log`
 
 
 ============================================
