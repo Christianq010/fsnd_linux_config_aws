@@ -269,8 +269,11 @@ Got the URL of our site by doing a reverse DNS lookup of the public IP address o
   http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/login
   ```
 
-_I followed the Following posts - [Udacity LAMP Set-up Blog Post] (https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html), [Digital Ocean Tutorial - Deploy Flask App on Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps), [Digital Ocean Tutorial - CRUD in PostgreSQL] (https://www.digitalocean.com/community/tutorials/how-to-create-remove-manage-tables-in-postgresql-on-a-cloud-server), [Digital Ocean Tutorial - Secure PostgreSQL in Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)_
-
+_I followed the Following posts_
+[Udacity LAMP Set-up Blog Post] (https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html), 
+[Digital Ocean Tutorial - Deploy Flask App on Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps), 
+[Digital Ocean Tutorial - CRUD in PostgreSQL] (https://www.digitalocean.com/community/tutorials/how-to-create-remove-manage-tables-in-postgresql-on-a-cloud-server), 
+[Digital Ocean Tutorial - Secure PostgreSQL in Ubuntu] (https://www.digitalocean.com/community/tutorials/how-to-secure-postgresql-on-an-ubuntu-vps)
 
 
 ============================================
