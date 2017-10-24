@@ -127,10 +127,54 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
     sudo git clone https://github.com/Christianq010/fsnd_Item-Catalog-linux-server.git FlaskApp
     ```
 ### Editing our Project
-> I had to make changes to my Catalog Item project, which I have explained on the README of that repo.
+> I had to make changes to my Catalog Item project, which I have explained on the README of that repo as well.
   * https://github.com/Christianq010/fsnd_Item-Catalog-linux-server
 > Install Flask, our virtual environment and our dependencies.
 > Used a combination of git commands such as push, pull and commit to sync between edits made locally and the repo on our instance of ubuntu.
+
+#### Setting up our project to run on our Ubuntu server
+* Create a catalog.wsgi file - `sudo nano flaskapp.wsgi` in the `/var/www/FlaskApp` directory,
+with the following contents:
+ ```
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0, "/var/www/FlaskApp/")
+
+from FlaskApp import app as application
+application.secret_key = 'super_secret_key'
+ ```
+* Rename project.py to __init__.py `mv application.py __init__.py`
+
+#### Installing a virtual environment, flask and other project dependencies
+> Setting up a virtual environment will keep the application and its dependencies isolated from the main system. 
+> Changes to it will not affect the cloud server's system configurations.
+
+* Use pip to install virtualenv.
+  ```
+  sudo apt-get install python-pip
+  sudo pip install virtualenv
+  ```
+*  Install - `sudo apt install python-psycopg2`
+
+* `cd` into our `/var/www/FlaskApp/FlaskApp` folder.
+* Create an instance of the virtual environment and activate it
+```
+sudo virtualenv venv
+source venv/bin/activate
+```
+
+* Install flask and other dependencies
+```
+sudo pip install Flask
+sudo pip install bleach 
+sudo pip install httplib2
+sudo pip install requests
+sudo pip install oauth2client 
+sudo pip install sqlalchemy
+```
+* Leave the virtual env with `deactivate`.
+
 
 ### Configure / Enable a new virtual host
 * Create and edit with the following - `sudo nano /etc/apache2/sites-available/FlaskApp.conf`
@@ -155,6 +199,31 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
 ```
 * Restart the apache service with `service apache2 reload` or `service apache2 restart`
 * Enable our new virtual host with `sudo a2ensite FlaskApp`
+
+### Install and Configure our PostgreSQL database
+* Install - `sudo apt-get install postgresql postgresql-contrib`
+* Log in as user - `postgres` (a user created during installation) and create the following tables.
+  * Log in with `sudo su - postgres`
+  * Run `psql` in terminal
+* Create a user named `catalog` with password `123456`
+```sql
+CREATE USER catalog WITH PASSWORD '123456';
+```
+* Give this user the ability to create databases
+```sql
+ALTER USER catalog CREATEDB;
+```
+* Then create a database managed by that user
+```sql
+CREATE DATABASE catalog OWNER catalog;
+```
+* Connect to our newly created database - `\c catalog`
+* once connected to the database, lock down the permissions to only let `catalog` create tables:
+```sql
+REVOKE ALL ON SCHEMA public FROM public;
+GRANT ALL ON SCHEMA public TO catalog;
+```
+* Log out of the `psql` terminal with `\q`, and then use `exit` to logout/ switch back to our `grader` user.
 
 _I followed the Following posts - https://blog.udacity.com/2015/03/step-by-step-guide-install-lamp-linux-apache-mysql-python-ubuntu.html, https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps_
 
