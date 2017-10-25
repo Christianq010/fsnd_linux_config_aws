@@ -31,7 +31,7 @@ ssh -i ~/.ssh/fsnd_udacity_project.pem ubuntu@35.154.1.22
 * As ubuntu, add user `grader` with command: `sudo adduser grader` (password: grader)
 * *Note:* Use the `su` command to switch user from `ubuntu` to `grader` with `su - grader`
 
-## Allow sudo commands to user grader
+### Allow sudo commands to user grader
 * As the `ubuntu` user - 
  * Access the `/etc/sudoers.d` with `sudo ls /etc/sudoers.d`
  * Create the file `grader`, in my case I copied an existing file and renamed it.
@@ -65,8 +65,8 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.1.22
  * `sudo chmod 700 .ssh`
  * `sudo chmod 644 .ssh/authorized_keys`
 
-## Packages
-# Add Package
+# Packages
+## Add Package
   * Install package finger `sudo apt-get install finger`
 
 > Check info about user grader using finger with - `finger grader`
@@ -87,7 +87,7 @@ ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.1.22
 ssh -i ~/.ssh/udacity_fsnd_key grader@35.154.1.22 -p 2200
 ```
 
-## Uncomplicated Firewall - UFW
+# Uncomplicated Firewall - UFW
 ### *Configuring our Firewall*
 * Check status on our firewall - `sudo ufw status`
 * Block all connections coming in - `sudo ufw default deny incoming`
@@ -103,7 +103,7 @@ sudo ufw allow 123/udp
 * Enable our Firewall (*only once we have configured our firewall correctly*) - `sudo ufw enable`
 * Check out status to see implementation of firewall using - `sudo ufw status`
 
-# Install and configure to serve our python application
+# Install Software and Configure our vm to serve our python application
 
 ### Installing Apache
 > Apache is our web server, its job is to process HTTP requests.
@@ -130,13 +130,14 @@ _We can `cd` to the `var/www/html` directory, to find the html file that is curr
     ```
     sudo git clone https://github.com/Christianq010/fsnd_Item-Catalog-linux-server.git FlaskApp
     ```
-### Editing our Project
+## Editing our Project
+
 > I had to make changes to my Catalog Item project, which I have explained on the README of that repo as well.
   * https://github.com/Christianq010/fsnd_Item-Catalog-linux-server
 > Install Flask, our virtual environment and our dependencies.
 > Used a combination of git commands such as push, pull and commit to sync between edits made locally and the repo on our instance of ubuntu.
 
-#### Setting up our project to run on our Ubuntu server
+### Setting up our project to run on our Ubuntu server
 * Create a catalog.wsgi file - `sudo nano flaskapp.wsgi` in the `/var/www/FlaskApp` directory,
 with the following contents:
 
@@ -153,7 +154,7 @@ application.secret_key = 'super_secret_key'
 
 * Rename project.py to __init__.py `mv application.py __init__.py`
 
-#### Installing a virtual environment, flask and other project dependencies
+### Installing a virtual environment, flask and other project dependencies
 > Setting up a virtual environment will keep the application and its dependencies isolated from the main system. 
 > Changes to it will not affect the cloud server's system configurations.
 
@@ -232,7 +233,10 @@ GRANT ALL ON SCHEMA public TO catalog;
 ```
 * Log out of the `psql` terminal with `\q`, and then use `exit` to logout/ switch back to our `grader` user.
 
-#### Edits made to our repository on our server to config our server
+## Edits made to our repository on our server to config our server
+
+> Changes made to our project repo from the cloned localhost version.
+
 * Refactor the following files - `__init__.py`,`database_setup.py`,`data.py` to contain our new database connection.
 ```python
 engine = create_engine('postgresql://catalog:123456@localhost/catalog')
@@ -242,9 +246,9 @@ engine = create_engine('postgresql://catalog:123456@localhost/catalog')
 app_id = json.loads(open('/var/www/FlaskApp/FlaskApp/fb_client_secrets.json', 'r').read())[
         'web']['app_id']
 ```
-#### Update Google / Facebook Sign in Info
+### Update Google / Facebook Sign in Info
 Got the URL of our site by doing a reverse DNS lookup of the public IP address of our server here - https://mxtoolbox.com/ReverseLookup.aspx
-* For our [Google Log in] (https://console.developers.google.com/apis/credentials/)
+* For our [Google Log in](https://console.developers.google.com/apis/credentials/)
   * Add to our Authorized Javascript origins
   ```
   http://35.154.1.22
@@ -259,7 +263,7 @@ Got the URL of our site by doing a reverse DNS lookup of the public IP address o
   ```
   * Download the new client_secrets.json file and update our `/var/www/FlaskApp/FlaskApp/client_secret.json` with its contents.
 
-* For our [Facebook Log in] (https://developers.facebook.com/apps/)
+* For our [Facebook Log in](https://developers.facebook.com/apps/)
   * On App, go to our Facebook Login Settings and save the following in the Valid OAuth redirect URIs
   ```
   http://35.154.1.22
@@ -280,18 +284,18 @@ _I followed the Following posts_
 ============================================
 
 # Tips / Notes
-### ubuntu Password
+### User - ubuntu Password
 > Default ubuntu user is created upon instance.
  * To change password - `sudo passwrd <username>`
-### Moving folders, renaming and removing files
+## Moving folders, renaming and removing files
  * To move folders in linux use `mv source target` and `mv filename1.txt filename2.txt`.
  * To remove `sudo rm -f -r filename`
 
-# SSH Reboot and Restart
+## SSH Reboot and Restart
 * Use `sudo service ssh restart` or `/etc/init.d/ssh restart` to restart ssh after changes.
 * Use `sudo reboot` to disconnect and restart VM.
 
-## Viewing Apache2 Error Logs during set-up
+## Viewing Apache2 Error Logs during Apache server and .wsgi set-up
 * `sudo journalctl | tail`
 * Look into `/var/log/` directories, in my case `/var/log/apache2/error.log`
 
