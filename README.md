@@ -99,6 +99,7 @@ sudo ufw allow 2200/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 123/udp
  ```
+* Since we aren't using port 22 for anything we can deny it with `sudo ufw deny 22` (we can also edit our Networking tab on our aws lightsail console).
 * Enable our Firewall (*only once we have configured our firewall correctly*) - `sudo ufw enable`
 * Check out status to see implementation of firewall using - `sudo ufw status`
 
