@@ -246,9 +246,9 @@ engine = create_engine('postgresql://catalog:123456@localhost/catalog')
 app_id = json.loads(open('/var/www/FlaskApp/FlaskApp/fb_client_secrets.json', 'r').read())[
         'web']['app_id']
 ```
-  ### Update Google / Facebook Sign in Info
-   Got the URL of our site by doing a reverse DNS lookup of the public IP address of our server here - https://mxtoolbox.com/ReverseLookup.aspx
-  * For our [Google Log in](https://console.developers.google.com/apis/credentials/)
+### Update Google / Facebook Sign in Info
+Got the URL of our site by doing a reverse DNS lookup of the public IP address of our server here - https://mxtoolbox.com/ReverseLookup.aspx
+* For our [Google Log in](https://console.developers.google.com/apis/credentials/)
    * Add to our Authorized Javascript origins
    ```
    http://35.154.1.22
@@ -263,7 +263,7 @@ app_id = json.loads(open('/var/www/FlaskApp/FlaskApp/fb_client_secrets.json', 'r
    ```
    * Download the new client_secrets.json file and update our `/var/www/FlaskApp/FlaskApp/client_secret.json` with its contents.
 
-  * For our [Facebook Log in](https://developers.facebook.com/apps/)
+* For our [Facebook Log in](https://developers.facebook.com/apps/)
    * On App, go to our Facebook Login Settings and save the following in the Valid OAuth redirect URIs
    ```
    http://35.154.1.22
