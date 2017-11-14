@@ -7,14 +7,16 @@ _A baseline installation of a Linux distribution on a virtual machine to host ou
 * Select the closest region to your location and the pricing plan you desire.
 * Give your instance a name and start it up.
 
+_Note: Since I completed the FSND, my Amazon Lightsail plan was cancelled. These instructions still apply when setting up a new server._
+
 # Server details
 Public IP address: `35.154.1.22`
 
-Private IP: `172.26.14.76`
+Private IP: ~~`172.26.14.76`~~
 
 SSH port: `2200`
 
-Our URL: http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/
+Our URL: ~~http://ec2-35-154-1-22.ap-south-1.compute.amazonaws.com/~~
 
 
 *I also created a keypair (on my instance of AWS lightsail), downloaded the .pem(private key) generated, placed in my ~/.ssh folder and used the following command to connect via our own ssh client(git bash)*
